@@ -1,11 +1,11 @@
 from login import LoginPage
-import tkinter as tk
+import customtkinter as ctk
 from kandidat_data import CandidateData
 
 
 
 def main():
-    root = tk.Tk()
+    root = ctk.CTk()
     data_kandidat = CandidateData()
     app = LoginPage(root, data_kandidat)  # Memulai dengan halaman login
     root.mainloop()

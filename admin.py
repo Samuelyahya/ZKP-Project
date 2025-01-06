@@ -1,15 +1,13 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
 
-
-
-
 class AdminSystem:
-    def __init__(self, root, logout_callback, data_kandidat ):
+    def __init__(self, root, logout_callback, data_kandidat):
         """
-        Halaman Admin
+        Halaman Admin menggunakan CustomTkinter
         :param root: Tkinter root window
         :param logout_callback: Fungsi callback untuk logout ke halaman login
+        :param data_kandidat: Objek yang menangani data kandidat (misalnya penyimpanan dan pengambilan data)
         """
         self.root = root
         self.candidate_data = data_kandidat
@@ -25,44 +23,52 @@ class AdminSystem:
             widget.destroy()
 
         # Judul halaman admin
-        title = tk.Label(self.root, text="Halaman Admin", font=("Arial", 16))
+        title = ctk.CTkLabel(self.root, text="Halaman Admin", font=("Arial", 16, "bold"))
         title.pack(pady=20)
 
         # Pesan selamat datang
-        welcome_label = tk.Label(self.root, text="Selamat datang di Panel Admin!", font=("Arial", 12))
+        welcome_label = ctk.CTkLabel(self.root, text="Selamat datang di Panel Admin!", font=("Arial", 12))
         welcome_label.pack(pady=10)
 
-        # List kandidat
-        self.candidate_listbox = tk.Listbox(self.root, height=10, width=30)
-        self.candidate_listbox.pack(pady=10)
+        # Frame untuk menampilkan daftar kandidat
+        self.candidate_frame = ctk.CTkFrame(self.root)
+        self.candidate_frame.pack(pady=10, expand=True, anchor="center")
 
-        # Update daftar kandidat
+        # Membuat label untuk setiap kandidat
         self.update_candidate_list()
 
         # Input untuk menambahkan kandidat baru
-        self.new_candidate_entry = tk.Entry(self.root, width=25)
+        self.new_candidate_entry = ctk.CTkEntry(self.root, width=250)
         self.new_candidate_entry.pack(pady=5)
 
         # Tombol untuk menambahkan kandidat
-        add_candidate_button = tk.Button(
+        add_candidate_button = ctk.CTkButton(
             self.root, text="Tambah Kandidat", command=self.add_candidate
         )
         add_candidate_button.pack(pady=10)
 
         # Tombol untuk logout
-        logout_button = tk.Button(self.root, text="Logout", command=self.logout)
+        logout_button = ctk.CTkButton(self.root, text="Logout", command=self.logout)
         logout_button.pack(pady=20)
 
     def update_candidate_list(self):
         """
-        Memperbarui Listbox kandidat dengan data terbaru.
+        Memperbarui daftar kandidat dengan label.
         """
-        # Hapus semua item di Listbox
-        self.candidate_listbox.delete(0, tk.END)
+        # Hapus label kandidat lama
+        for widget in self.candidate_frame.winfo_children():
+            widget.destroy()
 
-        # Tambahkan kandidat ke Listbox
+        # Tambahkan label untuk setiap kandidat
         for candidate in self.candidates:
-            self.candidate_listbox.insert(tk.END, candidate)
+            candidate_label = ctk.CTkLabel(
+                self.candidate_frame,
+                text=candidate,
+                font=("Arial", 12),
+                anchor="w",
+                width=200
+            )
+            candidate_label.pack(pady=5, padx=20, fill="x")
 
     def add_candidate(self):
         """
@@ -75,7 +81,7 @@ class AdminSystem:
                 self.candidates.append(new_candidate)
                 self.candidate_data.save_candidates(self.candidates)
                 self.update_candidate_list()  # Perbarui tampilan
-                self.new_candidate_entry.delete(0, tk.END)  # Bersihkan input
+                self.new_candidate_entry.delete(0, ctk.END)  # Bersihkan input
                 messagebox.showinfo("Sukses", f"Kandidat '{new_candidate}' berhasil ditambahkan!")
             else:
                 messagebox.showerror("Error", f"Kandidat '{new_candidate}' sudah ada!")
@@ -90,6 +96,4 @@ class AdminSystem:
             for widget in self.root.winfo_children():
                 widget.destroy()
             self.logout_callback()
-            
 
-        

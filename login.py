@@ -1,4 +1,4 @@
-import tkinter as tk
+import customtkinter as ctk
 from tkinter import messagebox
 from vote import VotingSystem
 from admin import AdminSystem
@@ -7,7 +7,12 @@ class LoginPage:
     def __init__(self, root, data_kandidat):
         self.root = root
         self.data_kandidat = data_kandidat
-        root.title("Login")
+        self.root.title("Login")
+        self.root.geometry("400x300")
+        
+        # Ubah tema menggunakan CustomTkinter
+        ctk.set_appearance_mode("dark")  # Dark mode
+        ctk.set_default_color_theme("blue")  # Tema biru
 
         # Simulasi database user
         self.users = {
@@ -40,25 +45,41 @@ class LoginPage:
 
     def setup_ui(self):
 
-        # Membuat frame untuk form login
-        frame = tk.Frame(self.root)
-        frame.pack(pady=20)
+              # Membuat frame utama dengan styling
+        frame = ctk.CTkFrame(self.root, width=300, height=250)
+        frame.place(relx=0.5, rely=0.5, anchor=ctk.CENTER)
+
+        # Label judul
+        label_title = ctk.CTkLabel(
+            frame, text="Login", font=("Arial", 18, "bold")
+        )
+        label_title.grid(row=0, column=0, columnspan=2, pady=(10, 20))
 
         # Label dan entry untuk username
-        label_username = tk.Label(frame, text="Username:")
-        label_username.grid(row=0, column=0, padx=5, pady=5)
-        self.entry_username = tk.Entry(frame)
-        self.entry_username.grid(row=0, column=1, padx=5, pady=5)
+        label_username = ctk.CTkLabel(
+            frame, text="Username:", font=("Arial", 12)
+        )
+        label_username.grid(row=1, column=0, padx=10, pady=5, sticky="e")
+        self.entry_username = ctk.CTkEntry(frame, font=("Arial", 12), width=200)
+        self.entry_username.grid(row=1, column=1, padx=10, pady=5)
 
         # Label dan entry untuk password
-        label_password = tk.Label(frame, text="Password:")
-        label_password.grid(row=1, column=0, padx=5, pady=5)
-        self.entry_password = tk.Entry(frame, show="*")  # Gunakan '*' untuk menyembunyikan input
-        self.entry_password.grid(row=1, column=1, padx=5, pady=5)
+        label_password = ctk.CTkLabel(
+            frame, text="Password:", font=("Arial", 12)
+        )
+        label_password.grid(row=2, column=0, padx=10, pady=5, sticky="e")
+        self.entry_password = ctk.CTkEntry(frame, show="*", font=("Arial", 12), width=200)
+        self.entry_password.grid(row=2, column=1, padx=10, pady=5)
 
-        # Tombol login
-        button_login = tk.Button(frame, text="Login", command=self.login)
-        button_login.grid(row=2, columnspan=2, pady=10)
+        # Tombol login dengan desain modern
+        button_login = ctk.CTkButton(
+            frame,
+            text="Login",
+            font=("Arial", 12, "bold"),
+            command=self.login,
+            width=200
+        )
+        button_login.grid(row=3, column=0, columnspan=2, pady=(20, 10))
 
     def open_admin_page(self):
             # Bersihkan window
